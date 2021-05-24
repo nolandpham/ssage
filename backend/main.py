@@ -4,7 +4,7 @@ from __future__ import absolute_import
 from flask import Flask
 
 # change it
-from skeleton.api import api
+from sage.api import api
 
 import logging
 from logging.handlers import RotatingFileHandler

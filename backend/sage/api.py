@@ -3,7 +3,7 @@ from __future__ import absolute_import
 
 from flask import Blueprint, jsonify
 
-from skeleton.auth import auth
+from sage.auth import auth
 
 api = Blueprint("api", __name__, url_prefix='/api/v1')
 
