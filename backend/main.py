@@ -2,15 +2,20 @@
 from __future__ import absolute_import
 
 from flask import Flask
-
-# change it
-from sage.api import api
+from flask_sqlalchemy import SQLAlchemy
 
 import logging
 from logging.handlers import RotatingFileHandler
 
 application = Flask(__name__)
-application.register_blueprint(api)
+
+from sage.api import api_route
+application.register_blueprint(api_route)
+
+# config database connection
+application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://admin:root@localhost/ssage'
+application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(application)
 
 # Set Logger
 log = logging.getLogger(__name__)
