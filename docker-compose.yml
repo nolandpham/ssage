@@ -1,0 +1,32 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: ssage-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ssage
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: root
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    networks:
+      - ssage
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ssage-backend
+    restart: unless-stopped
+    volumes:
+      - ./backend:/apps
+    ports:
+      - 5000:5000
+    networks:
+      - ssage
+
+networks:
+  ssage:
+    driver: "bridge"

@@ -2,7 +2,6 @@
 from __future__ import absolute_import
 
 from flask import Flask
-from flask_assets import Environment, Bundle
 
 # change it
 from skeleton.api import api

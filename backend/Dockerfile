@@ -1,8 +1,5 @@
-FROM alpine:3.2
+FROM python:3.7-alpine
 
-RUN apk add --update python openssl git
-RUN wget http://bootstrap.pypa.io/get-pip.py
-RUN python get-pip.py
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --upgrade -r /tmp/requirements.txt
 RUN rm -rf /var/cache/apk/*
