@@ -1,0 +1,6 @@
+Flask-Assets
+Flask
+pyScss
+cssmin
+Flask-HTTPAuth
+gunicorn
