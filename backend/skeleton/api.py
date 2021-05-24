@@ -5,7 +5,7 @@ from flask import Blueprint, jsonify
 
 from skeleton.auth import auth
 
-api = Blueprint("api", __name__, url_prefix='/api/v1.0')
+api = Blueprint("api", __name__, url_prefix='/api/v1')
 
 @api.route('/health', methods=['GET'])
 @auth.login_required
