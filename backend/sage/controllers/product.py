@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
-from flask import Blueprint, jsonify, Flask, request, jsonify, make_response
-from sage.auth import auth
+from flask import Blueprint, jsonify, Flask, request
 
-api_route = Blueprint("api_route", __name__, url_prefix='/api/v1')
+product_route = Blueprint("product_route", __name__, url_prefix='/api/v1')
 
-from main import db
+from sage.app import db
 from sage.models import Product
 
 
-@api_route.route('/health', methods=['GET'])
-@auth.login_required
+@product_route.route('/health', methods=['GET'])
 def health():
     data = {
         "health": "Good doctor!"
@@ -18,7 +15,7 @@ def health():
     return jsonify(data), 200
 
 
-@api_route.route('/product/<int:id>', methods=['GET'])
+@product_route.route('/product/<int:id>', methods=['GET'])
 def get_product(id):
     product = Product.query.filter_by(id=id).first()
     if not product:
@@ -27,14 +24,13 @@ def get_product(id):
     return jsonify(product.serialize()), 200
 
 
-@api_route.route('/product', methods=['GET'])
+@product_route.route('/product', methods=['GET'])
 def list_product():
-    print(Product.__table__.columns.keys())
     products = Product.query.all()
     return jsonify(Product.serialize_list(products)), 200
 
 
-@api_route.route('/product', methods=['POST'])
+@product_route.route('/product', methods=['POST'])
 def create_product():
     product = Product()
 
@@ -54,7 +50,7 @@ def create_product():
     return jsonify(product.serialize()), 201
 
 
-@api_route.route('/product/<int:id>', methods=['PUT'])
+@product_route.route('/product/<int:id>', methods=['PUT'])
 def update_product(id):
     product = Product.query.filter_by(id=id).first()
     if not product:
@@ -78,7 +74,7 @@ def update_product(id):
     return jsonify(product.serialize()), 200
 
 
-@api_route.route('/product/<int:id>', methods=['DELETE'])
+@product_route.route('/product/<int:id>', methods=['DELETE'])
 def delete_product(id):
     product = Product.query.filter_by(id=id).first()
     if not product:

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
 from datetime import datetime
 from sqlalchemy import DateTime
 from sqlalchemy.dialects.mysql import JSON as MySQLJSON
 from sqlalchemy.inspection import inspect
-from main import db
+
+from sage.app import db
 
 
 class Serializer(object):
