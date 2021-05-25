@@ -43,6 +43,33 @@ def create_variant(product_id):
     return jsonify(variant.serialize()), 201
 
 
+@variant_route.route('/product/<int:product_id>/variants', methods=['POST'])
+def create_variants(product_id):
+    variants = []
+    variant_data = request.get_json();
+    for data in variant_data:
+        variant = Variant()
+        variant.product_id = product_id
+
+        if 'name' in data:
+            variant.name = data['name']
+        else:
+            return jsonify({'message': 'Variant name are required!'}), 400
+
+        variant.size = data['size']
+        variant.color = data['color']
+        variant.images = data['images']
+
+        # do save
+        db.session.add(variant)
+        variants.append(variant)
+
+    # commit session
+    db.session.commit()
+
+    return jsonify(Variant.serialize_list(variants)), 201
+
+
 @variant_route.route('/product/<int:product_id>/variant/<int:id>', methods=['PUT'])
 def update_variant(product_id, id):
     variant = Variant.query.filter_by(product_id=product_id, id=id).first()
