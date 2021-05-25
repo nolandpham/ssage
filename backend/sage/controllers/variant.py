@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, jsonify, Flask, request
+from sage.app import db
+from sage.models import Variant, Image
 
 variant_route = Blueprint("variant_route", __name__, url_prefix='/api/v1')
-
-from sage.app import db
-from sage.models import Variant
 
 
 @variant_route.route('/product/<int:product_id>/variant/<int:id>', methods=['GET'])
@@ -34,7 +33,7 @@ def create_variant(product_id):
 
     variant.size = request.form.get('size')
     variant.color = request.form.get('color')
-    variant.images = request.form.get('images')
+    # variant.images = request.form.get('images')
 
     # do save
     db.session.add(variant)
@@ -58,7 +57,7 @@ def create_variants(product_id):
 
         variant.size = data['size']
         variant.color = data['color']
-        variant.images = data['images']
+        # variant.images = data['images']
 
         # do save
         db.session.add(variant)
@@ -85,8 +84,8 @@ def update_variant(product_id, id):
     if 'color' in request.form:
         variant.color = request.form.get('color')
 
-    if 'images' in request.form:
-        variant.images = request.form.get('images')
+    # if 'images' in request.form:
+    #     variant.images = request.form.get('images')
 
     db.session.add(variant)
     db.session.commit()
@@ -104,3 +103,31 @@ def delete_variant(product_id, id):
     db.session.commit()
 
     return {}, 200
+
+
+@variant_route.route('/product/<int:product_id>/variant/<int:id>/image', methods=['POST'])
+def inject_image(product_id, id):
+    variant = Variant.query.filter_by(product_id=product_id, id=id).first()
+    if not variant:
+        return jsonify({'message': 'Variant not found.'}), 400
+    
+    image = Image()
+
+    if 'url' in request.form:
+        image.url = request.form.get('url')
+
+    db.session.add(image)
+    db.session.flush()
+    print("Created image: %d" % image.id)
+    
+    # do update variant.images
+    images = [image.id]
+    if variant.images:
+        for img_id in variant.images:
+            images.append(img_id)
+    variant.images = images
+    db.session.add(variant)
+
+    db.session.commit()
+
+    return jsonify(variant.serialize()), 200
