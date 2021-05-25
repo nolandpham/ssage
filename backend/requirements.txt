@@ -1,3 +1,5 @@
 Flask
 Flask-HTTPAuth
 SQLAlchemy
+Flask-SQLAlchemy
+mysqlclient

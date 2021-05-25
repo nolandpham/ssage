@@ -13,7 +13,7 @@ from sage.api import api_route
 application.register_blueprint(api_route)
 
 # config database connection
-application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://admin:root@localhost/ssage'
+application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://admin:root@127.0.0.1:3306/ssage'
 application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(application)
 

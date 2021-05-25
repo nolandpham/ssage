@@ -5,13 +5,13 @@ from sqlalchemy import DateTime
 from sqlalchemy.dialects.mysql import JSON as MySQLJSON
 from main import db
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
+# class User(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     username = db.Column(db.String(80), unique=True, nullable=False)
+#     email = db.Column(db.String(120), unique=True, nullable=False)
 
-    def __repr__(self):
-        return '<User %r>' % self.username
+#     def __repr__(self):
+#         return '<User %r>' % self.username
 
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -25,19 +25,11 @@ class Product(db.Model):
     def __repr__(self):
         return '<Product %r>' % self.name
 
-# - id: any type of unique id
-# - name: name of the product
-# - description: description of the product
-# - images: an list of associated images
-# - logo_id: the primary logo for this images
-# - created_at: timestamp
-# - updated_at: timestamp
-
 
 class Variant(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
-    name = db.Column(db.String(1024), uniquenullable=False)
+    name = db.Column(db.String(1024), nullable=False)
     size = db.Column(db.String(1024), nullable=True)
     color = db.Column(db.String(1024), nullable=True)
     images = db.Column(MySQLJSON, nullable=True)
@@ -47,15 +39,6 @@ class Variant(db.Model):
     def __repr__(self):
         return '<Variant %r>' % self.name
 
-# - id: any type of unique id
-# - product_id: id of the relevant product
-# - name: name of the variant
-# - size: size of the variant
-# - color: color of the variant
-# - images: an list of associated images
-# - created_at: timestamp
-# - updated_at: timestamp
-
 
 class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -63,3 +46,35 @@ class Image(db.Model):
 
     def __repr__(self):
         return '<Image %r>' % self.url
+
+
+"""
+CREATE DATABASE ssage;
+USE ssage;
+
+CREATE TABLE product (
+    id INT(6) AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(1024) NOT NULL,
+    description TEXT,
+    images JSON,
+    logo_id INT(6),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE variant (
+    id INT(6) AUTO_INCREMENT PRIMARY KEY,
+    product_id INT(6) NOT NULL,
+    name VARCHAR(1024) NOT NULL,
+    size VARCHAR(1024),
+    color VARCHAR(1024),
+    images JSON,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE image (
+    id INT(6) AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(2048) NOT NULL
+);
+"""
