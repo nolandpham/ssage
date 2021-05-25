@@ -20,7 +20,7 @@ class Product(db.Model, Serializer):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(1024), nullable=False)
     description = db.Column(db.Text, nullable=True)
-    images = db.Column(MySQLJSON, nullable=True)
+    images = db.Column(MySQLJSON, nullable=True, default=[])
     logo_id = db.Column(db.Integer, nullable=True)
     created_at = db.Column(DateTime, default=datetime.utcnow)
     updated_at = db.Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -35,7 +35,7 @@ class Variant(db.Model, Serializer):
     name = db.Column(db.String(1024), nullable=False)
     size = db.Column(db.String(1024), nullable=True)
     color = db.Column(db.String(1024), nullable=True)
-    images = db.Column(MySQLJSON, nullable=True)
+    images = db.Column(MySQLJSON, nullable=True, default=[])
     created_at = db.Column(DateTime, default=datetime.utcnow)
     updated_at = db.Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -78,6 +78,6 @@ CREATE TABLE variant (
 
 CREATE TABLE image (
     id INT(6) AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(2048) NOT NULL
+    url VARCHAR(2048) NOT NULL
 );
 """
