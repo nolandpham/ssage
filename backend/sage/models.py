@@ -3,17 +3,20 @@ from __future__ import absolute_import
 from datetime import datetime
 from sqlalchemy import DateTime
 from sqlalchemy.dialects.mysql import JSON as MySQLJSON
+from sqlalchemy.inspection import inspect
 from main import db
 
-# class User(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     username = db.Column(db.String(80), unique=True, nullable=False)
-#     email = db.Column(db.String(120), unique=True, nullable=False)
 
-#     def __repr__(self):
-#         return '<User %r>' % self.username
+class Serializer(object):
+    def serialize(self):
+        return {c: getattr(self, c) for c in inspect(self).attrs.keys()}
 
-class Product(db.Model):
+    @staticmethod
+    def serialize_list(l):
+        return [m.serialize() for m in l]
+
+
+class Product(db.Model, Serializer):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(1024), nullable=False)
     description = db.Column(db.Text, nullable=True)
@@ -26,7 +29,7 @@ class Product(db.Model):
         return '<Product %r>' % self.name
 
 
-class Variant(db.Model):
+class Variant(db.Model, Serializer):
     id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
     name = db.Column(db.String(1024), nullable=False)
@@ -40,7 +43,7 @@ class Variant(db.Model):
         return '<Variant %r>' % self.name
 
 
-class Image(db.Model):
+class Image(db.Model, Serializer):
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String(2048), nullable=False) # max length IE like
 
