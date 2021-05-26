@@ -1,4 +1,4 @@
-# SourceSage Full Stack Developer Challenge
+# Full Stack Developer Challenge
 
 > This repository contains the challenge for full stack developers.
 
